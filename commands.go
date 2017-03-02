@@ -58,10 +58,36 @@ var Commands = []cli.Command{
 		},
 	},
 	{
-		Name:   "s3",
-		Usage:  "",
-		Action: cli.ActionFunc(command.CmdS3),
-		Flags:  []cli.Flag{},
+		Name:  "s3",
+		Usage: "s3 buckets",
+		Subcommands: []cli.Command{
+			{
+				Name:   "buckets",
+				Usage:  "list buckets",
+				Action: cli.ActionFunc(command.CmdS3Buckets),
+				Flags: []cli.Flag{
+					cli.StringFlag{
+						Name:  "env, e",
+						Usage: "Environment, e.g: dev",
+					},
+				},
+			},
+			{
+				Name:   "objects",
+				Usage:  "remove an existing template",
+				Action: cli.ActionFunc(command.CmdS3Objects),
+				Flags: []cli.Flag{
+					cli.StringFlag{
+						Name:  "bucket, b",
+						Usage: "Bucket, e.g: bucketname",
+					},
+					cli.StringFlag{
+						Name:  "prefix, p",
+						Usage: "Prefix of objects, e.g: img_",
+					},
+				},
+			},
+		},
 	},
 	{
 		Name:   "vpcs",

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
 
@@ -72,6 +73,8 @@ func fetchConfigGetFlags(c *cli.Context) map[string]string {
 		"region": c.String("region"),
 		"limit":  c.String("limit"),
 		"status": c.String("status"),
+		"bucket": c.String("bucket"),
+		"prefix": c.String("prefix"),
 	}
 }
 
@@ -83,4 +86,8 @@ func useName(flags map[string]string, instance string) bool {
 		return false
 	}
 	return true
+}
+
+func SetTitle(text string) string {
+	return output.ChangeColor(text, color.FgBlue)
 }

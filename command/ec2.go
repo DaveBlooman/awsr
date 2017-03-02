@@ -14,10 +14,10 @@ func CmdEc2(c *cli.Context) error {
 	flags := fetchConfigGetFlags(c)
 
 	sess := setupAWS(flags)
-	svc := ec2.New(sess)
+	client := ec2.New(sess)
 
 	params := &ec2.DescribeInstancesInput{}
-	resp, err := svc.DescribeInstances(params)
+	resp, err := client.DescribeInstances(params)
 	if err != nil {
 		output.Error(err.Error())
 	}
@@ -25,7 +25,7 @@ func CmdEc2(c *cli.Context) error {
 	reservations := resp.Reservations
 
 	table := termtables.CreateTable()
-	table.AddHeaders("InstanceID", "IP Address", "State", "Launch Time", "Name")
+	table.AddHeaders(SetTitle("InstanceID"), SetTitle("IP Address"), SetTitle("State"), SetTitle("Launch Time"), SetTitle("Name"))
 
 	for _, reservation := range reservations {
 		for _, instance := range reservation.Instances {

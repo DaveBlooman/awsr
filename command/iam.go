@@ -40,7 +40,7 @@ func CmdIam(c *cli.Context) error {
 	}
 
 	table := termtables.CreateTable()
-	table.AddHeaders("ARN", "Create Date", "Role Name", "Role ID")
+	table.AddHeaders(SetTitle("ARN"), SetTitle("Create Date"), SetTitle("Role Name"), SetTitle("Role ID"))
 
 	for _, roles := range resp.Roles {
 		if useName(flags, *roles.RoleName) {
