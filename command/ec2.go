@@ -25,7 +25,7 @@ func CmdEc2(c *cli.Context) error {
 	reservations := resp.Reservations
 
 	table := termtables.CreateTable()
-	table.AddHeaders(SetTitle("InstanceID"), SetTitle("IP Address"), SetTitle("State"), SetTitle("Launch Time"), SetTitle("Name"))
+	table.AddHeaders(SetTitle("InstanceID"), SetTitle("IP Address"), SetTitle("State"), SetTitle("Launch Time"), SetTitle("Name"), SetTitle("Profile"))
 
 	for _, reservation := range reservations {
 		for _, instance := range reservation.Instances {
@@ -34,6 +34,10 @@ func CmdEc2(c *cli.Context) error {
 			launchtime := instance.LaunchTime.String()
 			tempIP := instance.PrivateIpAddress
 			tags := instance.Tags
+			var role string
+			if profile := instance.IamInstanceProfile; profile != nil {
+				role = *profile.Arn
+			}
 
 			var ipAddress string
 			if tempIP == nil {
@@ -55,10 +59,10 @@ func CmdEc2(c *cli.Context) error {
 
 			if name != "" {
 				if useName(flags, name) {
-					table.AddRow(id, ipAddress, state, launchtime, name)
+					table.AddRow(id, ipAddress, state, launchtime, name, role)
 				}
 			} else {
-				table.AddRow(id, ipAddress, state, launchtime, name)
+				table.AddRow(id, ipAddress, state, launchtime, name, role)
 			}
 		}
 	}
